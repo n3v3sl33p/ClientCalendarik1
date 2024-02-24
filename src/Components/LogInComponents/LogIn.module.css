@@ -17,6 +17,7 @@
   border-radius: 5px;
 }
 .input {
+  width: 280px;
   background-color: #fff;
   border: 1px solid #000;
   outline: none;
@@ -39,4 +40,14 @@
   border: none;
   border-radius: 5px;
   padding: 5px;
+  cursor: pointer;
+}
+.button:disabled {
+  background: #ccc;
+}
+.error {
+  background: none;
+  color: red;
+  font-weight: 400;
+  font-size: 15px;
 }

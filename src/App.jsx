@@ -1,20 +1,20 @@
 import { useContext, useEffect, useState } from "react";
 import LogIn from "./Components/LogInComponents/LogIn";
 import Registration from "./Components/RegistrComponents/Registr";
-
 import { Context } from "./main";
 import { observer } from "mobx-react-lite";
+import $api from "./http";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [isReg, setIsReg] = useState(false);
   const { store } = useContext(Context);
 
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      store.checkAuth();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem("token")) {
+  //     store.checkAuth();
+  //   }
+  // }, []);
 
   return (
     <>
