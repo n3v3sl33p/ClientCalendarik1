@@ -10,11 +10,11 @@ function App() {
   const [isReg, setIsReg] = useState(false);
   const { store } = useContext(Context);
 
-  // useEffect(() => {
-  //   if (localStorage.getItem("token")) {
-  //     store.checkAuth();
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      store.checkAuth();
+    }
+  }, []);
 
   return (
     <>
@@ -26,11 +26,7 @@ function App() {
           Registration
         </button>
       </div>
-      <h2>
-        {store.isAuth
-          ? `Пользователь авторизован ${store.user.email}`
-          : "АВТОРИЗУЙТЕСЬ"}
-      </h2>
+      <h2>{store.isAuth ? `${store.user.email}` : "АВТОРИЗУЙТЕСЬ"}</h2>
       {isLogin && <LogIn setIsLogin={setIsLogin} />}
       {isReg && <Registration setIsReg={setIsReg} />}
     </>

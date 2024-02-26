@@ -47,7 +47,7 @@ const LogIn = ({ setIsLogin }) => {
 
   const passwordHandler = (e) => {
     setPassword(e.target.value);
-    if (e.target.value.length < 3) {
+    if (e.target.value.length < 5) {
       setPasswordError("Пароль должен быть не менее 3 символов");
       if (!e.target.value) {
         setPasswordError("Пароль не может быть пустым");
@@ -85,11 +85,18 @@ const LogIn = ({ setIsLogin }) => {
           onChange={(e) => passwordHandler(e)}
           onBlur={(e) => blurHandler(e)}
         />
+        {store.errorMessage && (
+          <div className={styles.error}>{store.errorMessage}</div>
+        )}
         <button
           disabled={!isFormValid}
           type="submit"
           className={styles.button}
-          onClick={() => store.login(email, password)}
+          onClick={() => {
+            store.login(email, password);
+            setPassword("");
+            setEmail("");
+          }}
         >
           Log in
         </button>

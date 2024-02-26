@@ -6,6 +6,7 @@ import { API_URL } from "../http";
 export default class Store {
   user = {};
   isAuth = false;
+  errorMessage = "";
   constructor() {
     makeAutoObservable(this);
   }
@@ -16,15 +17,19 @@ export default class Store {
   setUser(user) {
     this.user = user;
   }
+  setErrorMessage(errorMessage) {
+    this.errorMessage = errorMessage;
+  }
   async login(email, password) {
     try {
       const response = await AuthServices.login(email, password);
       console.log(response);
-      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("token", response.data.accessToken);
       this.setAuth(true);
-      this.setUser(response.data);
+      this.setUser(response.data.user);
+      this.setErrorMessage("");
     } catch (e) {
-      console.warn(e);
+      this.setErrorMessage(e.response.data.message);
     }
   }
   async registration(email, password, fullName) {
@@ -36,11 +41,11 @@ export default class Store {
         fullName
       );
       console.log(response);
-      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("token", response.data.accessToken);
       this.setAuth(true);
-      this.setUser(response.data);
+      this.setUser(response.data.user);
     } catch (e) {
-      console.warn(e);
+      this.setErrorMessage(e.response.data.message);
     }
   }
 
@@ -57,11 +62,11 @@ export default class Store {
 
   async checkAuth() {
     try {
-      const response = await axios.get(`${API_URL}/auth/me`);
+      const response = await axios.get(`${API_URL}/auth/refresh`);
       console.log(response);
-      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("token", response.data.accessToken);
       this.setAuth(true);
-      this.setUser(response.data);
+      this.setUser(response.data.user);
     } catch (e) {
       console.warn(e);
     }
