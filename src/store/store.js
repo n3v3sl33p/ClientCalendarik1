@@ -7,6 +7,8 @@ export default class Store {
   user = {};
   isAuth = false;
   errorMessage = "";
+  doneMessage = "";
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -20,16 +22,21 @@ export default class Store {
   setErrorMessage(errorMessage) {
     this.errorMessage = errorMessage;
   }
+  setDoneMessage(doneMessage) {
+    this.doneMessage = doneMessage;
+  }
   async login(email, password) {
     try {
       const response = await AuthServices.login(email, password);
-      console.log(response);
+
       localStorage.setItem("token", response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
       this.setErrorMessage("");
+      this.setDoneMessage("Готово");
     } catch (e) {
       this.setErrorMessage(e.response.data.message);
+      this.setDoneMessage("");
     }
   }
   async registration(email, password, fullName) {
@@ -40,12 +47,15 @@ export default class Store {
         password,
         fullName
       );
-      console.log(response);
+
       localStorage.setItem("token", response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
+      this.setDoneMessage("Готово");
     } catch (e) {
+      console.log(e);
       this.setErrorMessage(e.response.data.message);
+      this.setDoneMessage("");
     }
   }
 

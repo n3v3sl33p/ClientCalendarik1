@@ -51,3 +51,9 @@
   font-weight: 400;
   font-size: 15px;
 }
+.done {
+  background: none;
+  color: green;
+  font-weight: 400;
+  font-size: 15px;
+}

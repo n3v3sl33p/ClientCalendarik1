@@ -23,7 +23,6 @@ const LogIn = ({ setIsLogin }) => {
       setIsFormValid(true);
     }
   }, [passwordError, emailError]);
-
   const blurHandler = (e) => {
     switch (e.target.name) {
       case "email":
@@ -44,7 +43,6 @@ const LogIn = ({ setIsLogin }) => {
       setEmailError("");
     }
   };
-
   const passwordHandler = (e) => {
     setPassword(e.target.value);
     if (e.target.value.length < 5) {
@@ -88,14 +86,13 @@ const LogIn = ({ setIsLogin }) => {
         {store.errorMessage && (
           <div className={styles.error}>{store.errorMessage}</div>
         )}
+
         <button
           disabled={!isFormValid}
           type="submit"
           className={styles.button}
           onClick={() => {
             store.login(email, password);
-            setPassword("");
-            setEmail("");
           }}
         >
           Log in

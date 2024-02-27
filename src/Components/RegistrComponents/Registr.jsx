@@ -108,10 +108,17 @@ const Registration = ({ setIsReg }) => {
           value={password}
           onChange={(e) => passwordHandler(e)}
         />
+        {store.errorMessage ? (
+          <div className={styles.error}>{store.errorMessage}</div>
+        ) : (
+          <div className={styles.done}>{store.doneMessage}</div>
+        )}
         <button
           disabled={!isFormValid}
           className={styles.button}
-          onClick={() => store.registration(email, password, fullName)}
+          onClick={() => {
+            store.registration(email, password, fullName);
+          }}
         >
           Registration
         </button>
