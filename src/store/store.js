@@ -29,6 +29,7 @@ export default class Store {
       this.setUser(response.data.user);
       this.setErrorMessage("");
     } catch (e) {
+      console.log(e);
       this.setErrorMessage(e.response.data.message);
     }
   }
@@ -44,6 +45,7 @@ export default class Store {
       localStorage.setItem("token", response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
+      this.setErrorMessage("");
     } catch (e) {
       this.setErrorMessage(e.response.data.message);
     }
@@ -62,7 +64,9 @@ export default class Store {
 
   async checkAuth() {
     try {
-      const response = await axios.get(`${API_URL}/auth/refresh`);
+      const response = await axios.get(`${API_URL}/auth/refresh`, {
+        withCredentials: true,
+      });
       console.log(response);
       localStorage.setItem("token", response.data.accessToken);
       this.setAuth(true);

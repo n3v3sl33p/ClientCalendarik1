@@ -1,118 +1,90 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import styles from "./Regist.module.css";
 import { Context } from "../../main";
 import { observer } from "mobx-react-lite";
+import { useForm } from "react-hook-form";
 
 const Registration = ({ setIsReg }) => {
-  const [fullName, setFullName] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [passwordDirty, setPasswordDirty] = useState(false);
-  const [emailDirty, setEmailDirty] = useState(false);
-  const [emailError, setEmailError] = useState("Email не может быть пустым");
-  const [passwordError, setPasswordError] = useState(
-    "Пароль не может быть пустым"
-  );
-  const [userNameDirty, setUserNameDirty] = useState(false);
-  const [userNameError, setUserNameError] = useState("Введите полное имя");
-  const [isFormValid, setIsFormValid] = useState(false);
   const { store } = useContext(Context);
-  useEffect(() => {
-    if (passwordError || emailError || userNameError) {
-      setIsFormValid(false);
-    } else {
-      setIsFormValid(true);
-    }
-  }, [passwordError, emailError, userNameError]);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+    },
+  });
 
-  const blurHandler = (e) => {
-    switch (e.target.name) {
-      case "email":
-        setEmailDirty(true);
-        break;
-      case "password":
-        setPasswordDirty(true);
-        break;
-      case "username":
-        setUserNameDirty(true);
-    }
-  };
-  const emailHandler = (e) => {
-    setEmail(e.target.value);
-    const re =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!re.test(String(e.target.value).toLowerCase())) {
-      setEmailError("Некоректный Email");
+  const onSubmit = async (data) => {
+    console.log(data);
+    await store.registration(data.email, data.password, data.fullName);
+    if (store.errorMessage) {
+      setValue("password", "");
     } else {
-      setEmailError("");
-    }
-  };
-
-  const passwordHandler = (e) => {
-    setPassword(e.target.value);
-    if (e.target.value.length < 3) {
-      setPasswordError("Пароль должен быть не менее 3 символов");
-      if (!e.target.value) {
-        setPasswordError("Пароль не может быть пустым");
-      }
-    } else {
-      setPasswordError("");
-    }
-  };
-
-  const userNameHandler = (e) => {
-    setFullName(e.target.value);
-    if (!e.target.value) {
-      setUserNameError("Введите полное имя");
-    } else {
-      setUserNameError(false);
+      setIsReg((prev) => !prev);
     }
   };
 
   return (
-    <div className={styles.modal}>
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.modal}>
       <div className={styles.modalContent}>
-        {userNameDirty && userNameError && (
-          <div className={styles.error}>{userNameError}</div>
+        {errors.fullName && (
+          <div className={styles.error}>{errors.fullName.message}</div>
         )}
         <input
-          onBlur={(e) => blurHandler(e)}
-          name="username"
+          {...register("fullName", {
+            required: "Поле обязательное",
+            pattern: {
+              value: /^[a-zA-Z ]+$/,
+              message: "Только буквы алфавита",
+            },
+          })}
+          placeholder="Full Name"
           type="text"
+          name="fullName"
           className={styles.input}
-          placeholder="Full name"
-          onChange={(e) => userNameHandler(e)}
-          value={fullName}
         />
-        {emailDirty && emailError && (
-          <div className={styles.error}>{emailError}</div>
+        {errors.email && (
+          <div className={styles.error}>{errors.email.message}</div>
         )}
         <input
-          onBlur={(e) => blurHandler(e)}
-          name="email"
-          type="text"
-          className={styles.input}
+          {...register("email", {
+            pattern: {
+              value:
+                /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/,
+              message: "Неверный формат",
+            },
+            required: "Поле обязательное",
+          })}
           placeholder="Email"
-          onChange={(e) => emailHandler(e)}
-          value={email}
+          type="text"
+          name="email"
+          className={styles.input}
         />
-        {passwordDirty && passwordError && (
-          <div className={styles.error}>{passwordError}</div>
+        {errors.password && (
+          <div className={styles.error}>{errors.password.message}</div>
         )}
         <input
-          onBlur={(e) => blurHandler(e)}
-          name="password"
-          type="password"
-          className={styles.input}
+          {...register("password", {
+            required: "Поле обязательное",
+            minLength: {
+              value: 6,
+              message: "Минимальная длина пароля 6 символов",
+            },
+          })}
           placeholder="Password"
-          value={password}
-          onChange={(e) => passwordHandler(e)}
+          type="password"
+          name="password"
+          className={styles.input}
         />
-        <button
-          disabled={!isFormValid}
-          className={styles.button}
-          onClick={() => store.registration(email, password, fullName)}
-        >
+        {store.errorMessage && (
+          <div className={styles.error}>{store.errorMessage}</div>
+        )}
+        <button type="submit" className={styles.button}>
           Registration
         </button>
         <button
@@ -122,7 +94,7 @@ const Registration = ({ setIsReg }) => {
           X
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 

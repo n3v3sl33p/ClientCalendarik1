@@ -1,51 +1,72 @@
 import { useContext, useEffect, useState } from "react";
 import styles from "./LogIn.module.css";
-
 import { Context } from "../../main";
 import { observer } from "mobx-react-lite";
+import { useForm } from "react-hook-form";
 
 const LogIn = ({ setIsLogin }) => {
+  const { store } = useContext(Context);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    await store.login(data.email, data.password);
+    if (store.errorMessage) {
+      setValue("password", "");
+    } else {
+      setIsLogin((prev) => !prev);
+    }
+  };
   return (
-    <div className={styles.modal}>
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.modal}>
       <div className={styles.modalContent}>
-        {emailError && emailDirty && (
-          <div className={styles.error}>{emailError}</div>
+        {errors.email && (
+          <div className={styles.error}>{errors.email.message}</div>
         )}
         <input
-          name="email"
-          type="text"
-          autoComplete="disbled"
-          className={styles.input}
+          {...register("email", {
+            pattern: {
+              value:
+                /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/,
+              message: "Неверный формат",
+            },
+            required: "Поле обязательное",
+          })}
           placeholder="Email"
-          value={email}
-          onChange={(e) => emailHandler(e)}
-          onBlur={(e) => blurHandler(e)}
+          type="text"
+          name="email"
+          className={styles.input}
         />
-        {passwordDirty && passwordError && (
-          <div className={styles.error}>{passwordError}</div>
+        {errors.password && (
+          <div className={styles.error}>{errors.password.message}</div>
         )}
         <input
-          name="password"
-          type="password"
-          className={styles.input}
+          {...register("password", {
+            required: "Поле обязательное",
+            minLength: {
+              value: 6,
+              message: "Минимальная длина пароля 6 символов",
+            },
+          })}
           placeholder="Password"
-          value={password}
-          onChange={(e) => passwordHandler(e)}
-          onBlur={(e) => blurHandler(e)}
+          type="password"
+          name="password"
+          className={styles.input}
         />
         {store.errorMessage && (
           <div className={styles.error}>{store.errorMessage}</div>
         )}
-        <button
-          disabled={!isFormValid}
-          type="submit"
-          className={styles.button}
-          onClick={() => {
-            store.login(email, password);
-            setPassword("");
-            setEmail("");
-          }}
-        >
+        <button type="submit" className={styles.button}>
           Log in
         </button>
         <button
@@ -55,7 +76,7 @@ const LogIn = ({ setIsLogin }) => {
           X
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 

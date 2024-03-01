@@ -25,6 +25,9 @@ function App() {
         <button className="Button2" onClick={() => setIsReg((prev) => !prev)}>
           Registration
         </button>
+        <button className="Button2" onClick={() => store.logout()}>
+          Log out
+        </button>
       </div>
       <h2>{store.isAuth ? `${store.user.email}` : "АВТОРИЗУЙТЕСЬ"}</h2>
       {isLogin && <LogIn setIsLogin={setIsLogin} />}
