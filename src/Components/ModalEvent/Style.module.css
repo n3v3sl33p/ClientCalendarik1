@@ -7,7 +7,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 11;
+  z-index: 10;
 }
 .modalContent {
   position: relative;
@@ -16,16 +16,6 @@
   flex-direction: column;
   padding: 50px;
   border-radius: 5px;
-}
-.input {
-  width: 280px;
-  background-color: #fff;
-  border: 1px solid #000;
-  outline: none;
-  padding: 10px;
-  margin-bottom: 5px;
-  border-radius: 5px;
-  color: #000;
 }
 
 .closeButton {
@@ -36,19 +26,4 @@
   border: none;
   color: #000;
   cursor: pointer;
-}
-.button {
-  border: none;
-  border-radius: 5px;
-  padding: 5px;
-  cursor: pointer;
-}
-.button:disabled {
-  background: #ccc;
-}
-.error {
-  background: none;
-  color: red;
-  font-weight: 400;
-  font-size: 15px;
 }

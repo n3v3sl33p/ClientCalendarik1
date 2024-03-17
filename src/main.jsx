@@ -2,9 +2,7 @@ import React, { createContext } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import Store from "./store/store.js";
-
-const store = new Store();
+import store from "./store/store.js";
 
 export const Context = createContext({
   store,

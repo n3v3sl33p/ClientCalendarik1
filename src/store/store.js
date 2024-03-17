@@ -1,14 +1,42 @@
-import { makeAutoObservable } from "mobx";
+import { action, makeAutoObservable, observable, runInAction } from "mobx";
+
 import AuthServices from "../services/AuthServices";
 import axios from "axios";
 import { API_URL } from "../http";
+import moment from "moment";
+import $api from "../http";
 
-export default class Store {
+class Store {
   user = {};
   isAuth = false;
   errorMessage = "";
+  eventList = [];
+
   constructor() {
+    this.user = {};
+    this.isAuth = false;
+    this.errorMessage = "";
+    this.eventList = [];
     makeAutoObservable(this);
+  }
+
+  async addEvent(event) {
+    try {
+      const response = await $api.post(`${API_URL}/events`, event);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async deleteEvent(id) {
+    try {
+      console.log(id);
+      const response = await $api.delete(`${API_URL}/events/${id}`);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   setAuth(bool) {
@@ -75,4 +103,27 @@ export default class Store {
       console.warn(e);
     }
   }
+
+  async getAllEvent() {
+    try {
+      const response = await axios.get(`${API_URL}/events`);
+
+      if (response.data.length !== this.eventList.length) {
+        this.eventList = [];
+        response.data.forEach((obj) => {
+          this.eventList.push({
+            start: obj.start,
+            end: obj.end,
+            title: obj.title,
+            resource: { color: obj.resource.color, id: obj.id },
+          });
+        });
+
+        console.log("update");
+      }
+    } catch (e) {
+      console.warn(e);
+    }
+  }
 }
+export default new Store();
