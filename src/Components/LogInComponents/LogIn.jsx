@@ -3,6 +3,7 @@ import styles from "./LogIn.module.css";
 import { Context } from "../../main";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
+import { Button } from "../Button/Button";
 
 const LogIn = ({ setIsLogin }) => {
   const { store } = useContext(Context);
@@ -19,7 +20,6 @@ const LogIn = ({ setIsLogin }) => {
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
     await store.login(data.email, data.password);
     if (store.errorMessage) {
       setValue("password", "");
@@ -66,15 +66,12 @@ const LogIn = ({ setIsLogin }) => {
         {store.errorMessage && (
           <div className={styles.error}>{store.errorMessage}</div>
         )}
-        <button type="submit" className={styles.button}>
+        <Button disabled={errors.email || errors.password ? true : false}>
           Log in
-        </button>
-        <button
-          onClick={() => setIsLogin((prev) => !prev)}
-          className={styles.closeButton}
-        >
+        </Button>
+        <Button onClick={() => setIsLogin((prev) => !prev)} isClose={true}>
           X
-        </button>
+        </Button>
       </div>
     </form>
   );

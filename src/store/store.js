@@ -8,6 +8,7 @@ import $api from "../http";
 
 class Store {
   user = {};
+  users = [];
   isAuth = false;
   errorMessage = "";
   eventList = [];
@@ -112,8 +113,8 @@ class Store {
         this.eventList = [];
         response.data.forEach((obj) => {
           this.eventList.push({
-            start: obj.start,
-            end: obj.end,
+            start: moment(obj.start).toDate(),
+            end: moment(obj.end).toDate(),
             title: obj.title,
             resource: { color: obj.resource.color, id: obj.id },
           });
@@ -123,6 +124,56 @@ class Store {
       }
     } catch (e) {
       console.warn(e);
+    }
+  }
+  async signUpEvent(eventId, userId) {
+    console.log(eventId, userId);
+    try {
+      const response = await $api.post(`${API_URL}/user/event/signup`, {
+        user_id: userId,
+        event_id: eventId,
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async getAllUsers() {
+    try {
+      const response = await $api.get(`${API_URL}/adm/getall`);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async getAllSignUp(userId) {
+    try {
+      const response = await $api.get(`${API_URL}/user/event/signup/${userId}`);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async getAllUsersById(eventId) {
+    try {
+      const response = await $api.get(`${API_URL}/events/${eventId}`);
+      console.log(response);
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async markVisit(eventId, userId, condition) {
+    try {
+      const response = await $api.patch(`${API_URL}/adm/setVisited`, {
+        event_id: eventId,
+        user_id: userId,
+        visited: condition,
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
     }
   }
 }

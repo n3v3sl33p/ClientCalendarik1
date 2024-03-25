@@ -8,6 +8,7 @@
   justify-content: center;
   align-items: center;
   z-index: 10;
+  background: rgba(0, 0, 0, 0.5);
 }
 .modalContent {
   position: relative;
@@ -16,14 +17,4 @@
   flex-direction: column;
   padding: 50px;
   border-radius: 5px;
-}
-
-.closeButton {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: none;
-  border: none;
-  color: #000;
-  cursor: pointer;
 }

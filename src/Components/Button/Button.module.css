@@ -1,0 +1,35 @@
+.button {
+  margin-top: 10px;
+  background-color: #fff;
+  color: #000;
+  outline: none;
+  padding: 5px 10px;
+  border: 1px solid #000;
+
+  cursor: pointer;
+  margin-left: 5px;
+  /* transition: all 0.3s; */
+}
+.closeButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+  color: #000;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #000;
+  color: #fff;
+}
+.button:enabled:active {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.button:disabled {
+  background-color: #ccc;
+  color: #666;
+}

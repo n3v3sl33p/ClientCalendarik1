@@ -5,9 +5,14 @@ import { Context } from "./main";
 import { observer } from "mobx-react-lite";
 import { MyCalendar } from "./Components/Calendar/MyCalendar";
 import ReactDatePicker from "react-datepicker";
+import { registerLocale, setDefaultLocale } from "react-datepicker";
+import ru from "date-fns/locale/ru";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./App.module.css";
 import { ModalEvent } from "./Components/ModalEvent/ModalEvent";
+import { Button } from "./Components/Button/Button";
+
+registerLocale("ru", ru);
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -21,16 +26,18 @@ function App() {
     resource: { color: "#f6b73c", id: 1 },
   });
   const [selectedEvent, setSelectedEvent] = useState({});
+  const [eventError, setEventError] = useState();
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
       store.checkAuth();
     }
   }, []);
-
-  setInterval(() => {
-    store.getAllEvent();
-  }, 1000);
+  if (store.isAuth) {
+    setInterval(() => {
+      store.getAllEvent();
+    }, 1000);
+  }
 
   return (
     <>
@@ -40,15 +47,15 @@ function App() {
         <ModalEvent setIsModalEvent={setIsModalEvent} event={selectedEvent} />
       )}
       <div className="DivWButtons">
-        <button className="Button1" onClick={() => setIsLogin((prev) => !prev)}>
+        <Button
+          onClick={() => {
+            setIsLogin((prev) => !prev);
+          }}
+        >
           Вход
-        </button>
-        <button className="Button2" onClick={() => setIsReg((prev) => !prev)}>
-          Регистрация
-        </button>
-        <button className="Button2" onClick={() => store.logout()}>
-          Выход
-        </button>
+        </Button>
+        <Button onClick={() => setIsReg((prev) => !prev)}>Регистрация</Button>
+        <Button onClick={() => store.logout()}>Выход</Button>
       </div>
       <h2>{store.isAuth ? `${store.user.email}` : "АВТОРИЗУЙТЕСЬ"}</h2>
       <div className={styles.container}>
@@ -72,19 +79,20 @@ function App() {
             showIcon
             showTimeInput
             selected={event.start}
-            onChange={(date) =>
-              setEvent({ ...event, start: date.toISOString() })
-            }
-            dateFormat="yyyy-mm-dd hh:mm:ss"
+            onChange={(date) => {
+              setEvent({ ...event, start: date.toISOString() });
+            }}
+            dateFormat="dd.MM.YYYY HH:mm"
+            locale="ru"
           />
           <span style={{ marginTop: 10 }}>Конец мероприятия</span>
           <ReactDatePicker
             showIcon
             showTimeInput
-            timeFormat="p"
             selected={event.end}
             onChange={(date) => setEvent({ ...event, end: date.toISOString() })}
-            dateFormat="yyyy-mm-dd hh:mm:ss"
+            dateFormat="dd.MM.YYYY HH:mm"
+            locale="ru"
           />
           <input
             type="color"
@@ -96,15 +104,18 @@ function App() {
               })
             }
           />
-          <button
-            className={styles.button}
-            type="button"
+          {eventError && <p>{eventError}</p>}
+          <Button
             disabled={
               event.start === "" || event.end === "" || event.title === ""
             }
             onClick={() => {
-              console.log(event);
+              if (event.start > event.end) {
+                setEventError("Неправильная дата");
+                return;
+              }
               store.addEvent(event);
+
               setEvent({
                 start: "",
                 end: "",
@@ -114,9 +125,24 @@ function App() {
             }}
           >
             Создать
-          </button>
+          </Button>
         </div>
       </div>
+      <Button
+        onClick={() => {
+          store.getAllSignUp(store.user.id);
+        }}
+      >
+        Мои записи
+      </Button>
+      <Button>Мои посещения</Button>
+      <Button
+        onClick={() => {
+          store.getAllUsersById(1);
+        }}
+      >
+        На первый ивент записались
+      </Button>
     </>
   );
 }

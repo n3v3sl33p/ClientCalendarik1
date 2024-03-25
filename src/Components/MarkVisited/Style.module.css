@@ -18,6 +18,24 @@
   padding: 50px;
   border-radius: 5px;
 }
+
+.closeButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+  color: #000;
+  cursor: pointer;
+}
+
+.button {
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+}
 .input {
   width: 280px;
   background-color: #fff;
@@ -27,11 +45,4 @@
   margin-bottom: 5px;
   border-radius: 5px;
   color: #000;
-}
-
-.error {
-  background: none;
-  color: red;
-  font-weight: 400;
-  font-size: 15px;
 }

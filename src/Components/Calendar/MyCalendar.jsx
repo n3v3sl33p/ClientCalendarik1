@@ -32,7 +32,30 @@ export const MyCalendar = observer((props) => {
     props.setIsModalEvent(true);
     props.setSelectedEvent(event);
   };
+  const message = {
+    date: "Дата",
+    time: "Время",
+    event: "Событие",
+    allDay: "Весь День",
+    week: "Неделя",
+    work_week: "Рабочая Неделя",
+    day: "День",
+    month: "Месяц",
+    previous: "Назад",
+    next: "Далее",
+    yesterday: "Вчера",
+    tomorrow: "Завтра",
+    today: "Сегодня",
+    agenda: "Agenda",
 
+    noEventsInRange: "There are no events in this range.",
+    /**
+     * params {total} count of remaining events
+     * params {remainingEvents} remaining events
+     * params {events} all events in day
+     */
+    showMore: (total, remainingEvents, events) => `+${total} más`,
+  };
   return (
     <div style={{ height: "600px", width: "80%" }}>
       <Calendar
@@ -43,6 +66,7 @@ export const MyCalendar = observer((props) => {
         eventPropGetter={eventPropGetter}
         onSelectEvent={handleClick}
         views={["month", "week", "day"]}
+        messages={message}
       />
     </div>
   );

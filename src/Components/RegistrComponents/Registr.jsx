@@ -3,6 +3,7 @@ import styles from "./Regist.module.css";
 import { Context } from "../../main";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
+import { Button } from "../Button/Button";
 
 const Registration = ({ setIsReg }) => {
   const { store } = useContext(Context);
@@ -84,15 +85,10 @@ const Registration = ({ setIsReg }) => {
         {store.errorMessage && (
           <div className={styles.error}>{store.errorMessage}</div>
         )}
-        <button type="submit" className={styles.button}>
-          Registration
-        </button>
-        <button
-          onClick={() => setIsReg((prev) => !prev)}
-          className={styles.closeButton}
-        >
+        <Button type="submit">Registration</Button>
+        <Button onClick={() => setIsReg((prev) => !prev)} isClose={true}>
           X
-        </button>
+        </Button>
       </div>
     </form>
   );
