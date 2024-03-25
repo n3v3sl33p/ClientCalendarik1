@@ -5,10 +5,9 @@ import { Context } from "../../main";
 import { MarkVisitedModal } from "../MarkVisited/MarkVisitedModal";
 import { Button } from "../Button/Button";
 
-export const ModalEvent = (props) => {
+export const ModalEvent = observer((props) => {
   const { store } = useContext(Context);
   const [showVisitedModal, setShowVisitedModal] = useState(false);
-
   return (
     <div className={styles.modal}>
       {showVisitedModal && (
@@ -22,7 +21,10 @@ export const ModalEvent = (props) => {
         <p>{props.event.start.toLocaleDateString()}</p>
         <Button
           isClose={true}
-          onClick={(prev) => props.setIsModalEvent(!prev)}
+          onClick={(prev) => {
+            store.setSignUpError(null);
+            props.setIsModalEvent(!prev);
+          }}
           type="button"
         >
           X
@@ -49,9 +51,8 @@ export const ModalEvent = (props) => {
         >
           Буду
         </Button>
+        {store.signUpError && <div>Вы уже записаны</div>}
       </div>
     </div>
   );
-};
-
-observer(ModalEvent);
+});

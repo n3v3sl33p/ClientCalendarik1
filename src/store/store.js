@@ -12,6 +12,7 @@ class Store {
   isAuth = false;
   errorMessage = "";
   eventList = [];
+  signUpError = "";
 
   constructor() {
     this.user = {};
@@ -48,6 +49,9 @@ class Store {
   }
   setErrorMessage(errorMessage) {
     this.errorMessage = errorMessage;
+  }
+  setSignUpError(errorMessage) {
+    this.signUpError = errorMessage;
   }
   async login(email, password) {
     try {
@@ -135,6 +139,8 @@ class Store {
       });
       console.log(response);
     } catch (error) {
+      this.setSignUpError(error.response.data.message);
+
       console.log(error);
     }
   }
@@ -171,6 +177,7 @@ class Store {
         user_id: userId,
         visited: condition,
       });
+
       console.log(response);
     } catch (error) {
       console.log(error);
