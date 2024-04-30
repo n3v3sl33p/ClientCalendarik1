@@ -11,28 +11,32 @@ import "react-datepicker/dist/react-datepicker.css";
 import styles from "./App.module.css";
 import { ModalEvent } from "./Components/ModalEvent/ModalEvent";
 import { Button } from "./Components/Button/Button";
-
+import { UserIcon } from "./Components/UserIcon/UserIcon";
+import { AddEvent } from "./Components/addEvent/AddEvent";
 registerLocale("ru", ru);
 
-function App() {
+export const App = observer(() => {
   const [isLogin, setIsLogin] = useState(false);
   const [isReg, setIsReg] = useState(false);
   const [isModalEvent, setIsModalEvent] = useState(false);
   const { store } = useContext(Context);
-  const [event, setEvent] = useState({
-    start: "",
-    end: "",
-    title: "",
-    resource: { color: "#f6b73c", id: 1 },
-  });
   const [selectedEvent, setSelectedEvent] = useState({});
-  const [eventError, setEventError] = useState();
+
+  const [personeScore, setPersoneScore] = useState(null);
 
   useEffect(() => {
+    const fetchScore = async () => {
+      const score = await store.getPersoneScore(store.user.id);
+      setPersoneScore(score.points);
+    };
     if (localStorage.getItem("token")) {
       store.checkAuth();
+      fetchScore(store.user.id);
     }
-  }, []);
+    if (store.user.id) {
+      fetchScore();
+    }
+  }, [store.user.id]);
   if (store.isAuth) {
     setInterval(() => {
       store.getAllEvent();
@@ -46,18 +50,20 @@ function App() {
       {isModalEvent && (
         <ModalEvent setIsModalEvent={setIsModalEvent} event={selectedEvent} />
       )}
-      <div className="DivWButtons">
-        <Button
-          onClick={() => {
-            setIsLogin((prev) => !prev);
-          }}
-        >
-          Вход
-        </Button>
-        <Button onClick={() => setIsReg((prev) => !prev)}>Регистрация</Button>
-        <Button onClick={() => store.logout()}>Выход</Button>
-      </div>
-      <h2>{store.isAuth ? `${store.user.email}` : "АВТОРИЗУЙТЕСЬ"}</h2>
+      {!store.isAuth && (
+        <div className="DivWButtons">
+          <Button
+            onClick={() => {
+              setIsLogin((prev) => !prev);
+            }}
+          >
+            Вход
+          </Button>
+          <Button onClick={() => setIsReg((prev) => !prev)}>Регистрация</Button>
+        </div>
+      )}
+      {store.isAuth && <UserIcon />}
+      <p>{store.isAuth ? `${personeScore}` : null}</p>
       <div className={styles.container}>
         {
           <MyCalendar
@@ -65,68 +71,7 @@ function App() {
             setSelectedEvent={setSelectedEvent}
           />
         }
-        <div className={styles.addEventContainer}>
-          <h2>Добавить мероприятие</h2>
-          <input
-            type="text"
-            placeholder="Мероприятие"
-            value={event.title}
-            onChange={(e) => setEvent({ ...event, title: e.target.value })}
-            className={styles.eventName}
-          />
-          <span>Начало мероприятия</span>
-          <ReactDatePicker
-            showIcon
-            showTimeInput
-            selected={event.start}
-            onChange={(date) => {
-              setEvent({ ...event, start: date.toISOString() });
-            }}
-            dateFormat="dd.MM.YYYY HH:mm"
-            locale="ru"
-          />
-          <span style={{ marginTop: 10 }}>Конец мероприятия</span>
-          <ReactDatePicker
-            showIcon
-            showTimeInput
-            selected={event.end}
-            onChange={(date) => setEvent({ ...event, end: date.toISOString() })}
-            dateFormat="dd.MM.YYYY HH:mm"
-            locale="ru"
-          />
-          <input
-            type="color"
-            value={event.resource.color}
-            onChange={(e) =>
-              setEvent({
-                ...event,
-                resource: { color: e.target.value },
-              })
-            }
-          />
-          {eventError && <p>{eventError}</p>}
-          <Button
-            disabled={
-              event.start === "" || event.end === "" || event.title === ""
-            }
-            onClick={() => {
-              if (event.start > event.end) {
-                setEventError("Неправильная дата");
-                return;
-              }
-              store.addEvent(event);
-
-              setEvent({
-                start: "",
-                end: "",
-                title: "",
-                resource: { color: "#e66465", id: 1 },
-              });
-            }}
-          >
-            Создать
-          </Button>
-        </div>
+        {/* <AddEvent /> */}
       </div>
       <Button
         onClick={() => {
@@ -143,8 +88,13 @@ function App() {
       >
         На первый ивент записались
       </Button>
+      <Button
+        onClick={() => {
+          store.getPersoneScore(store.user.id);
+        }}
+      >
+        Knopka
+      </Button>
     </>
   );
-}
-
-export default observer(App);
+});

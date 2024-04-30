@@ -12,7 +12,8 @@
 }
 .modalContent {
   position: relative;
-  background-color: #fff;
+  background: #111f26;
+  color: #fff;
   display: flex;
   flex-direction: column;
   padding: 50px;

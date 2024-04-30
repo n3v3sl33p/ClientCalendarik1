@@ -1,32 +1,22 @@
 .button {
   margin-top: 10px;
-  background-color: #fff;
-  color: #000;
+  background-color: #009c4f;
+  color: #fff;
   outline: none;
-  padding: 5px 10px;
-  border: 1px solid #000;
-
+  padding: 10px 10px;
+  border-radius: 5px;
   cursor: pointer;
-  margin-left: 5px;
-  /* transition: all 0.3s; */
+  border: none;
 }
+
 .closeButton {
   position: absolute;
   top: 0;
   right: 0;
   background: none;
   border: none;
-  color: #000;
-  cursor: pointer;
-}
-
-.button:hover {
-  background-color: #000;
   color: #fff;
-}
-.button:enabled:active {
-  transform: translateY(-1px);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 
 .button:disabled {

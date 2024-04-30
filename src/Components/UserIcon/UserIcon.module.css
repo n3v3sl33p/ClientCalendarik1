@@ -1,0 +1,20 @@
+.userIcon {
+  color: #fff;
+  background-color: #009c4f;
+  display: inline-flex;
+  background-position: right;
+  padding: 15px 0px 20px 10px;
+  border-radius: 6px;
+  float: right;
+}
+.button {
+  border: none;
+  background: url(./out.svg) no-repeat;
+  margin-left: 30px;
+  width: 40px;
+  height: 40px;
+  align-content: center;
+}
+.userName {
+  align-content: center;
+}

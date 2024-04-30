@@ -2,23 +2,16 @@
 * {
   font-family: "Roboto", sans-serif;
 }
+body {
+  background-color: #111f26;
+}
+input {
+  border-radius: 5px;
+  border: none;
+}
 
 .DivWButtons {
   display: flex;
-  justify-content: right;
-}
-
-.Button1,
-.Button2 {
-  background-color: #fff;
-  color: #000;
-  outline: none;
-  padding: 5px 10px;
-  border: 1px solid #000;
-  border-radius: 5px;
-  cursor: pointer;
-}
-.Button1:hover,
-.Button2:hover {
-  background-color: #ffffffce;
+  gap: 5px;
+  float: right;
 }

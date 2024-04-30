@@ -57,7 +57,15 @@ export const MyCalendar = observer((props) => {
     showMore: (total, remainingEvents, events) => `+${total} más`,
   };
   return (
-    <div style={{ height: "600px", width: "80%" }}>
+    <div
+      style={{
+        height: "720px",
+        width: "1380px",
+        backgroundColor: "white",
+        // marginLeft: "130px",
+        borderRadius: "6px",
+      }}
+    >
       <Calendar
         localizer={localizer}
         startAccessor="start"

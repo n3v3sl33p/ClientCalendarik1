@@ -80,6 +80,7 @@ class Store {
       this.setUser(response.data.user);
       this.setErrorMessage("");
     } catch (e) {
+      console.log(e);
       this.setErrorMessage(e.response.data.message);
     }
   }
@@ -179,6 +180,16 @@ class Store {
       });
 
       console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getPersoneScore(userId) {
+    try {
+      const response = await $api.get(`${API_URL}/user/${userId}`);
+      console.log(response);
+      return response.data;
     } catch (error) {
       console.log(error);
     }
