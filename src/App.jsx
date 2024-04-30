@@ -13,6 +13,7 @@ import { ModalEvent } from "./Components/ModalEvent/ModalEvent";
 import { Button } from "./Components/Button/Button";
 import { UserIcon } from "./Components/UserIcon/UserIcon";
 import { AddEvent } from "./Components/addEvent/AddEvent";
+import { SideBar } from "./Components/SideBar/SideBar";
 registerLocale("ru", ru);
 
 export const App = observer(() => {
@@ -21,9 +22,8 @@ export const App = observer(() => {
   const [isModalEvent, setIsModalEvent] = useState(false);
   const { store } = useContext(Context);
   const [selectedEvent, setSelectedEvent] = useState({});
-
   const [personeScore, setPersoneScore] = useState(null);
-
+  const [isSideBar, setIsSideBar] = useState(false);
   useEffect(() => {
     const fetchScore = async () => {
       const score = await store.getPersoneScore(store.user.id);
@@ -50,8 +50,16 @@ export const App = observer(() => {
       {isModalEvent && (
         <ModalEvent setIsModalEvent={setIsModalEvent} event={selectedEvent} />
       )}
+      {isSideBar && <SideBar setIsSideBar={setIsSideBar} />}
+
       {!store.isAuth && (
         <div className="DivWButtons">
+          <button
+            className={styles.sideMenuButton}
+            onClick={() => {
+              setIsSideBar((prev) => !prev);
+            }}
+          />
           <Button
             onClick={() => {
               setIsLogin((prev) => !prev);

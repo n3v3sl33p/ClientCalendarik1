@@ -60,9 +60,8 @@ export const MyCalendar = observer((props) => {
     <div
       style={{
         height: "720px",
-        width: "1380px",
+        width: "1500px",
         backgroundColor: "white",
-        // marginLeft: "130px",
         borderRadius: "6px",
       }}
     >

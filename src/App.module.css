@@ -4,3 +4,16 @@
   margin-right: 10px;
   justify-content: space-around;
 }
+.sideMenuButton {
+  margin-top: 10px;
+  color: #fff;
+  outline: none;
+  padding: 10px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  background: url("./img/icons8-menu-30.svg") #009c4f no-repeat;
+  background-position: center;
+  padding: 20px 30px;
+  margin-right: auto;
+}

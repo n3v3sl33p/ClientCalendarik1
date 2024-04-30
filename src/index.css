@@ -13,5 +13,5 @@ input {
 .DivWButtons {
   display: flex;
   gap: 5px;
-  float: right;
+  justify-content: right;
 }

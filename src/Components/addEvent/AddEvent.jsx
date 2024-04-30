@@ -3,8 +3,9 @@ import { useState, useContext } from "react";
 import styles from "./AddEvent.module.css";
 import { Button } from "../Button/Button";
 import { Context } from "../../main";
+import { observable } from "mobx";
 
-export const AddEvent = ({}) => {
+export const AddEvent = observable(({}) => {
   const { store } = useContext(Context);
   const [event, setEvent] = useState({
     start: "",
@@ -75,4 +76,4 @@ export const AddEvent = ({}) => {
       </Button>
     </div>
   );
-};
+});
