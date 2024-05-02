@@ -1,11 +1,14 @@
+.wrapper {
+  display: flex;
+  justify-content: right;
+}
 .userIcon {
+  display: flex;
   color: #fff;
   background-color: #009c4f;
-  display: inline-flex;
   background-position: right;
   padding: 15px 0px 20px 10px;
   border-radius: 6px;
-  float: right;
 }
 .button {
   border: none;
@@ -14,6 +17,7 @@
   width: 40px;
   height: 40px;
   align-content: center;
+  cursor: pointer;
 }
 .userName {
   align-content: center;

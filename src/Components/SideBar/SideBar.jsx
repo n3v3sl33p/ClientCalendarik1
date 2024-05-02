@@ -1,9 +1,10 @@
 import styles from "./SideBar.module.css";
 import { Button } from "../Button/Button";
 import { useClickOutside } from "../../Hooks/useClickOutside";
-import { useRef, useContext } from "react";
+import { useRef, useContext, useState } from "react";
 import { Context } from "../../main";
-export const SideBar = ({ setIsSideBar }) => {
+
+export const SideBar = ({ setIsSideBar, setIsAddEvent, setIsMyEvents }) => {
   const menuRef = useRef(null);
   const { store } = useContext(Context);
   useClickOutside(menuRef, () => {
@@ -14,7 +15,8 @@ export const SideBar = ({ setIsSideBar }) => {
       <div className={styles.sideBarContent} ref={menuRef}>
         <Button
           onClick={() => {
-            console.log("asdfs");
+            setIsMyEvents((prev) => !prev);
+            setIsSideBar((prev) => !prev);
           }}
         >
           Мои записи
@@ -28,7 +30,8 @@ export const SideBar = ({ setIsSideBar }) => {
         </Button>
         <Button
           onClick={() => {
-            console.log("asdfs");
+            setIsAddEvent((prev) => !prev);
+            setIsSideBar((prev) => !prev);
           }}
         >
           Новое мероприятие

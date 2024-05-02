@@ -14,6 +14,7 @@ import { Button } from "./Components/Button/Button";
 import { UserIcon } from "./Components/UserIcon/UserIcon";
 import { AddEvent } from "./Components/addEvent/AddEvent";
 import { SideBar } from "./Components/SideBar/SideBar";
+import { MyEvents } from "./Components/MyEvents/MyEvents";
 registerLocale("ru", ru);
 
 export const App = observer(() => {
@@ -24,6 +25,9 @@ export const App = observer(() => {
   const [selectedEvent, setSelectedEvent] = useState({});
   const [personeScore, setPersoneScore] = useState(null);
   const [isSideBar, setIsSideBar] = useState(false);
+  const [isAddEvent, setIsAddEvent] = useState(false);
+  const [isMyEvents, setIsMyEvents] = useState(false);
+
   useEffect(() => {
     const fetchScore = async () => {
       const score = await store.getPersoneScore(store.user.id);
@@ -45,21 +49,23 @@ export const App = observer(() => {
 
   return (
     <>
+      {isAddEvent && <AddEvent setIsAddEvent={setIsAddEvent} />}
+      {isMyEvents && <MyEvents setIsMyEvents={setIsMyEvents} />}
       {isLogin && <LogIn setIsLogin={setIsLogin} />}
       {isReg && <Registration setIsReg={setIsReg} />}
       {isModalEvent && (
         <ModalEvent setIsModalEvent={setIsModalEvent} event={selectedEvent} />
       )}
-      {isSideBar && <SideBar setIsSideBar={setIsSideBar} />}
+      {isSideBar && (
+        <SideBar
+          setIsSideBar={setIsSideBar}
+          setIsAddEvent={setIsAddEvent}
+          setIsMyEvents={setIsMyEvents}
+        />
+      )}
 
       {!store.isAuth && (
         <div className="DivWButtons">
-          <button
-            className={styles.sideMenuButton}
-            onClick={() => {
-              setIsSideBar((prev) => !prev);
-            }}
-          />
           <Button
             onClick={() => {
               setIsLogin((prev) => !prev);
@@ -70,7 +76,18 @@ export const App = observer(() => {
           <Button onClick={() => setIsReg((prev) => !prev)}>Регистрация</Button>
         </div>
       )}
-      {store.isAuth && <UserIcon />}
+
+      {store.isAuth && (
+        <div className="DivWButtons">
+          <button
+            className={styles.sideMenuButton}
+            onClick={() => {
+              setIsSideBar((prev) => !prev);
+            }}
+          />
+          <UserIcon />
+        </div>
+      )}
       <p>{store.isAuth ? `${personeScore}` : null}</p>
       <div className={styles.container}>
         {

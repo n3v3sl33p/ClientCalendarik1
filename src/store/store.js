@@ -156,6 +156,7 @@ class Store {
   async getAllSignUp(userId) {
     try {
       const response = await $api.get(`${API_URL}/user/event/signup/${userId}`);
+      return response;
       console.log(response);
     } catch (error) {
       console.log(error);

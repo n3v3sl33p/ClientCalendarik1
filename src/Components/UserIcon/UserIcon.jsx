@@ -7,9 +7,11 @@ export const UserIcon = () => {
   const { store } = useContext(Context);
   console.log(store.user);
   return (
-    <div className={styles.userIcon}>
-      <p className={styles.userName}>{store.user.email}</p>
-      <button onClick={() => store.logout()} className={styles.button} />
+    <div className={styles.wrapper}>
+      <div className={styles.userIcon}>
+        <p className={styles.userName}>{store.user.email}</p>
+        <button onClick={() => store.logout()} className={styles.button} />
+      </div>
     </div>
   );
 };
