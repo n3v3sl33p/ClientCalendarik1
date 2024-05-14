@@ -121,6 +121,7 @@ class Store {
             start: moment(obj.start).toDate(),
             end: moment(obj.end).toDate(),
             title: obj.title,
+            description: obj.description,
             resource: { color: obj.resource.color, id: obj.id },
           });
         });
@@ -138,7 +139,6 @@ class Store {
         user_id: userId,
         event_id: eventId,
       });
-      console.log(response);
     } catch (error) {
       this.setSignUpError(error.response.data.message);
 
@@ -148,7 +148,6 @@ class Store {
   async getAllUsers() {
     try {
       const response = await $api.get(`${API_URL}/adm/getall`);
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -157,7 +156,6 @@ class Store {
     try {
       const response = await $api.get(`${API_URL}/user/event/signup/${userId}`);
       return response;
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -165,7 +163,6 @@ class Store {
   async getAllUsersById(eventId) {
     try {
       const response = await $api.get(`${API_URL}/events/${eventId}`);
-      console.log(response);
 
       return response.data;
     } catch (error) {
@@ -185,6 +182,28 @@ class Store {
       console.log(error);
     }
   }
+  async getAllSignUpUser(userId) {
+    try {
+      const response = await $api.get(
+        `${API_URL}/user/events/signed/${userId}`
+      );
+      return response.data;
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async getAllVisitsUser(userId) {
+    try {
+      const response = await $api.get(
+        `${API_URL}/user/events/visited/${userId}`
+      );
+      return response.data;
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async getPersoneScore(userId) {
     try {
@@ -195,5 +214,18 @@ class Store {
       console.log(error);
     }
   }
+  async postComment(eventId, userId, comment) {
+    try {
+      const response = await $api.post(`${API_URL}/user/event/comment`, {
+        event_id: eventId,
+        user_id: userId,
+        comment: comment,
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
+
 export default new Store();

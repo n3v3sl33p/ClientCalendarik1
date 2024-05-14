@@ -14,8 +14,8 @@ export const MyEvents = observer(({ setIsMyEvents }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await store.getAllSignUp(store.user.id);
-        setEventList(response.data);
+        const response = await store.getAllSignUpUser(store.user.id);
+        setEventList(response);
         console.error(response);
       } catch (error) {
         console.warn(error);
@@ -36,7 +36,7 @@ export const MyEvents = observer(({ setIsMyEvents }) => {
           }}
         />
         {eventList ? (
-          <ul>
+          <ul className={styles.list}>
             {eventList
               .filter((event) =>
                 event.title
@@ -44,11 +44,13 @@ export const MyEvents = observer(({ setIsMyEvents }) => {
                   .includes(eventName.toLocaleLowerCase())
               )
               .map((event) => (
-                <li key={event.id}>{event.title}</li>
+                <li key={event.id} className={styles.eventName}>
+                  {event.title}
+                </li>
               ))}
           </ul>
         ) : (
-          <p>Нет</p>
+          <p className={styles.eventName}>Нет</p>
         )}
       </div>
     </div>

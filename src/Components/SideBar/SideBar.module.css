@@ -10,6 +10,7 @@
 .sideBarContent {
   position: relative;
   width: 15%;
+  height: 100vh;
   display: flex;
   background-color: #111f26;
   flex-direction: column;

@@ -1,13 +1,15 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import styles from "./Style.module.css";
 import { Context } from "../../main";
 import { Button } from "../Button/Button";
+import { useClickOutside } from "../../Hooks/useClickOutside";
 
-export const MarkVisitedModal = ({ setShowVisitedModal, eventId }) => {
+export const MarkVisitedModal = ({ setIsMarkVisited, eventId }) => {
   const { store } = useContext(Context);
   const [userList, setUserList] = useState([]);
   const [userName, setUserName] = useState("");
-
+  const menuRef = useRef(null);
+  useClickOutside(menuRef, () => setIsMarkVisited((prev) => !prev));
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -22,15 +24,7 @@ export const MarkVisitedModal = ({ setShowVisitedModal, eventId }) => {
 
   return (
     <div className={styles.modal}>
-      <div className={styles.modalContent}>
-        <Button
-          onClick={() => {
-            setShowVisitedModal((prev) => !prev);
-          }}
-          isClose={true}
-        >
-          X
-        </Button>
+      <div className={styles.modalContent} ref={menuRef}>
         <input
           type="text"
           className={styles.input}

@@ -19,16 +19,6 @@
   border-radius: 5px;
 }
 
-.closeButton {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: none;
-  border: none;
-  color: #000;
-  cursor: pointer;
-}
-
 .button {
   margin-top: 10px;
   border: none;

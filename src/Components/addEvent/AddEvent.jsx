@@ -13,6 +13,7 @@ export const AddEvent = observer(({ setIsAddEvent }) => {
     start: "",
     end: "",
     title: "",
+    description: "",
     resource: { color: "#f6b73c", id: 1 },
   });
   const [eventError, setEventError] = useState();
@@ -69,6 +70,8 @@ export const AddEvent = observer(({ setIsAddEvent }) => {
           rows="10"
           placeholder="Описание ивента"
           className={styles.textarea}
+          onChange={(e) => setEvent({ ...event, description: e.target.value })}
+          value={event.description}
         />
         <Button
           disabled={
@@ -85,6 +88,7 @@ export const AddEvent = observer(({ setIsAddEvent }) => {
               start: "",
               end: "",
               title: "",
+              description: "",
               resource: { color: "#e66465", id: 1 },
             });
           }}

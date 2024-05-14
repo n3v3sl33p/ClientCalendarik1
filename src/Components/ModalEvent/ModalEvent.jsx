@@ -1,58 +1,61 @@
 import { observer } from "mobx-react-lite";
 import styles from "./Style.module.css";
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
 import { Context } from "../../main";
-import { MarkVisitedModal } from "../MarkVisited/MarkVisitedModal";
-import { Button } from "../Button/Button";
 
-export const ModalEvent = observer((props) => {
-  const { store } = useContext(Context);
-  const [showVisitedModal, setShowVisitedModal] = useState(false);
-  return (
-    <div className={styles.modal}>
-      {showVisitedModal && (
-        <MarkVisitedModal
-          setShowVisitedModal={setShowVisitedModal}
-          eventId={props.event.resource.id}
-        />
-      )}
-      <div className={styles.modalContent}>
-        <h2>{props.event.title}</h2>
-        <p>{props.event.start.toLocaleDateString()}</p>
-        <Button
-          isClose={true}
-          onClick={(prev) => {
-            store.setSignUpError(null);
-            props.setIsModalEvent(!prev);
-          }}
-          type="button"
-        >
-          X
-        </Button>
-        <Button
-          onClick={() => {
-            setShowVisitedModal(true);
-          }}
-        >
-          Запись
-        </Button>
-        <Button
-          onClick={(prev) => {
-            store.deleteEvent(props.event.resource.id);
-            props.setIsModalEvent(!prev);
-          }}
-        >
-          Удалить событые
-        </Button>
-        <Button
-          onClick={() => {
-            store.signUpEvent(props.event.resource.id, store.user.id);
-          }}
-        >
-          Буду
-        </Button>
-        {store.signUpError && <div>Вы уже записаны</div>}
+import { Button } from "../Button/Button";
+import { useClickOutside } from "../../Hooks/useClickOutside";
+
+export const ModalEvent = observer(
+  ({ event, setIsModalEvent, setIsMarkVisited, setCurrentEvent }) => {
+    const { store } = useContext(Context);
+    const [showVisitedModal, setShowVisitedModal] = useState(false);
+    const menuRef = useRef(null);
+    useClickOutside(menuRef, () => {
+      setIsModalEvent((prev) => !prev);
+      store.signUpError = null;
+    });
+
+    return (
+      <div className={styles.modal}>
+        {showVisitedModal && (
+          <MarkVisitedModal
+            setShowVisitedModal={setShowVisitedModal}
+            eventId={event.resource.id}
+          />
+        )}
+        <div className={styles.modalContent} ref={menuRef}>
+          <h2>{event.title}</h2>
+          <p>{event.description}</p>
+          <p>{event.start.toLocaleDateString()}</p>
+
+          <Button
+            onClick={() => {
+              setCurrentEvent(event.resource.id);
+              setIsModalEvent(false);
+              setIsMarkVisited((prev) => !prev);
+            }}
+          >
+            Запись
+          </Button>
+          <Button
+            onClick={(prev) => {
+              store.deleteEvent(event.resource.id);
+              setIsModalEvent(!prev);
+            }}
+          >
+            Удалить событые
+          </Button>
+          <Button
+            onClick={() => {
+              store.signUpEvent(event.resource.id, store.user.id);
+            }}
+          >
+            Буду
+          </Button>
+          {store.signUpError && <div>Вы уже записаны</div>}
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);

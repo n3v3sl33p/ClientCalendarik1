@@ -1,10 +1,9 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import LogIn from "./Components/LogInComponents/LogIn";
 import Registration from "./Components/RegistrComponents/Registr";
 import { Context } from "./main";
 import { observer } from "mobx-react-lite";
 import { MyCalendar } from "./Components/Calendar/MyCalendar";
-import ReactDatePicker from "react-datepicker";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import ru from "date-fns/locale/ru";
 import "react-datepicker/dist/react-datepicker.css";
@@ -14,7 +13,10 @@ import { Button } from "./Components/Button/Button";
 import { UserIcon } from "./Components/UserIcon/UserIcon";
 import { AddEvent } from "./Components/addEvent/AddEvent";
 import { SideBar } from "./Components/SideBar/SideBar";
+import { MarkVisitedModal } from "./Components/MarkVisited/MarkVisitedModal";
 import { MyEvents } from "./Components/MyEvents/MyEvents";
+import { MyVisits } from "./Components/MyVisits/MyVisits";
+import { Comment } from "./Components/Comment/Comment";
 registerLocale("ru", ru);
 
 export const App = observer(() => {
@@ -27,7 +29,10 @@ export const App = observer(() => {
   const [isSideBar, setIsSideBar] = useState(false);
   const [isAddEvent, setIsAddEvent] = useState(false);
   const [isMyEvents, setIsMyEvents] = useState(false);
-
+  const [isMarkVisited, setIsMarkVisited] = useState(false);
+  const [currentEvent, setCurrentEvent] = useState(false);
+  const [isMyVisits, setIsMyVisits] = useState(false);
+  const [isComment, setIsComment] = useState(false);
   useEffect(() => {
     const fetchScore = async () => {
       const score = await store.getPersoneScore(store.user.id);
@@ -54,16 +59,37 @@ export const App = observer(() => {
       {isLogin && <LogIn setIsLogin={setIsLogin} />}
       {isReg && <Registration setIsReg={setIsReg} />}
       {isModalEvent && (
-        <ModalEvent setIsModalEvent={setIsModalEvent} event={selectedEvent} />
+        <ModalEvent
+          setIsModalEvent={setIsModalEvent}
+          event={selectedEvent}
+          setCurrentEvent={setCurrentEvent}
+          setIsMarkVisited={setIsMarkVisited}
+        />
       )}
       {isSideBar && (
         <SideBar
           setIsSideBar={setIsSideBar}
           setIsAddEvent={setIsAddEvent}
           setIsMyEvents={setIsMyEvents}
+          setIsMyVisits={setIsMyVisits}
         />
       )}
-
+      {isMarkVisited && (
+        <MarkVisitedModal
+          setIsMarkVisited={setIsMarkVisited}
+          eventId={currentEvent}
+        />
+      )}
+      {isMyVisits && (
+        <MyVisits
+          setIsMyVisits={setIsMyVisits}
+          setIsComment={setIsComment}
+          setCurrentEvent={setCurrentEvent}
+        />
+      )}
+      {isComment && (
+        <Comment setIsComment={setIsComment} eventId={currentEvent} />
+      )}
       {!store.isAuth && (
         <div className="DivWButtons">
           <Button
@@ -96,30 +122,7 @@ export const App = observer(() => {
             setSelectedEvent={setSelectedEvent}
           />
         }
-        {/* <AddEvent /> */}
       </div>
-      <Button
-        onClick={() => {
-          store.getAllSignUp(store.user.id);
-        }}
-      >
-        Мои записи
-      </Button>
-      <Button>Мои посещения</Button>
-      <Button
-        onClick={() => {
-          store.getAllUsersById(1);
-        }}
-      >
-        На первый ивент записались
-      </Button>
-      <Button
-        onClick={() => {
-          store.getPersoneScore(store.user.id);
-        }}
-      >
-        Knopka
-      </Button>
     </>
   );
 });

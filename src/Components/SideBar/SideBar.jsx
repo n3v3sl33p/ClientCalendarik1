@@ -4,7 +4,12 @@ import { useClickOutside } from "../../Hooks/useClickOutside";
 import { useRef, useContext, useState } from "react";
 import { Context } from "../../main";
 
-export const SideBar = ({ setIsSideBar, setIsAddEvent, setIsMyEvents }) => {
+export const SideBar = ({
+  setIsSideBar,
+  setIsAddEvent,
+  setIsMyEvents,
+  setIsMyVisits,
+}) => {
   const menuRef = useRef(null);
   const { store } = useContext(Context);
   useClickOutside(menuRef, () => {
@@ -23,7 +28,8 @@ export const SideBar = ({ setIsSideBar, setIsAddEvent, setIsMyEvents }) => {
         </Button>
         <Button
           onClick={() => {
-            console.log("asdfs");
+            setIsMyVisits((prev) => !prev);
+            setIsSideBar((prev) => !prev);
           }}
         >
           Мои посещения

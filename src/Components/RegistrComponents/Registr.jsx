@@ -4,6 +4,8 @@ import { Context } from "../../main";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
 import { Button } from "../Button/Button";
+import { useRef } from "react";
+import { useClickOutside } from "../../Hooks/useClickOutside";
 
 const Registration = ({ setIsReg }) => {
   const { store } = useContext(Context);
@@ -29,10 +31,11 @@ const Registration = ({ setIsReg }) => {
       setIsReg((prev) => !prev);
     }
   };
-
+  const menuRef = useRef(null);
+  useClickOutside(menuRef, () => setIsReg((prev) => !prev));
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.modal}>
-      <div className={styles.modalContent}>
+      <div className={styles.modalContent} ref={menuRef}>
         {errors.fullName && (
           <div className={styles.error}>{errors.fullName.message}</div>
         )}
@@ -86,9 +89,6 @@ const Registration = ({ setIsReg }) => {
           <div className={styles.error}>{store.errorMessage}</div>
         )}
         <Button type="submit">Registration</Button>
-        <Button onClick={() => setIsReg((prev) => !prev)} isClose={true}>
-          X
-        </Button>
       </div>
     </form>
   );

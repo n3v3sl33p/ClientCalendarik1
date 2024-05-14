@@ -4,6 +4,8 @@ import { Context } from "../../main";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
 import { Button } from "../Button/Button";
+import { useRef } from "react";
+import { useClickOutside } from "../../Hooks/useClickOutside";
 
 const LogIn = ({ setIsLogin }) => {
   const { store } = useContext(Context);
@@ -27,9 +29,11 @@ const LogIn = ({ setIsLogin }) => {
       setIsLogin((prev) => !prev);
     }
   };
+  const menuRef = useRef(null);
+  useClickOutside(menuRef, () => setIsLogin((prev) => !prev));
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.modal}>
-      <div className={styles.modalContent}>
+      <div className={styles.modalContent} ref={menuRef}>
         {errors.email && (
           <div className={styles.error}>{errors.email.message}</div>
         )}
@@ -68,9 +72,6 @@ const LogIn = ({ setIsLogin }) => {
         )}
         <Button disabled={errors.email || errors.password ? true : false}>
           Log in
-        </Button>
-        <Button onClick={() => setIsLogin((prev) => !prev)} isClose={true}>
-          X
         </Button>
       </div>
     </form>
