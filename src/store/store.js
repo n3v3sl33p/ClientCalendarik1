@@ -188,7 +188,6 @@ class Store {
         `${API_URL}/user/events/signed/${userId}`
       );
       return response.data;
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -199,7 +198,6 @@ class Store {
         `${API_URL}/user/events/visited/${userId}`
       );
       return response.data;
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -222,6 +220,16 @@ class Store {
         comment: comment,
       });
       console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async getAllComments(eventId) {
+    try {
+      console.warn(eventId);
+      const response = await $api.get(`${API_URL}/events/comments/${eventId}`);
+      console.log(response);
+      return response.data;
     } catch (error) {
       console.log(error);
     }

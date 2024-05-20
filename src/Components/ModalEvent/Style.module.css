@@ -11,11 +11,42 @@
   background: rgba(0, 0, 0, 0.5);
 }
 .modalContent {
+  display: flex;
+  flex-direction: row;
   position: relative;
   background: #111f26;
   color: #fff;
-  display: flex;
-  flex-direction: column;
+
   padding: 50px;
   border-radius: 5px;
+}
+.descriptionWithButton {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.commentList {
+  padding: 0;
+  margin: 0px 0px 0px 50px;
+  list-style: none;
+  max-height: 400px;
+  max-width: 700px;
+  overflow: scroll;
+}
+.comment {
+  margin-top: 2px;
+}
+.header {
+  margin-top: 0px;
+}
+.commentContainer {
+  margin-top: 20px;
+}
+.buttons {
+  display: flex;
+  flex-direction: column;
+}
+.commentHeader {
+  margin-top: 2px;
+  margin-left: 50px;
 }

@@ -33,6 +33,7 @@ export const App = observer(() => {
   const [currentEvent, setCurrentEvent] = useState(false);
   const [isMyVisits, setIsMyVisits] = useState(false);
   const [isComment, setIsComment] = useState(false);
+  const [sample, setSample] = useState("");
   useEffect(() => {
     const fetchScore = async () => {
       const score = await store.getPersoneScore(store.user.id);
