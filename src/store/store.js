@@ -13,6 +13,9 @@ class Store {
   errorMessage = "";
   eventList = [];
   signUpError = "";
+  paymentError = "";
+  responseInfo = "";
+  userPoints = 0;
 
   constructor() {
     this.user = {};
@@ -25,8 +28,9 @@ class Store {
   async addEvent(event) {
     try {
       const response = await $api.post(`${API_URL}/events`, event);
-      console.log(response);
+      this.setResponseInfo(response.statusText);
     } catch (error) {
+      this.setResponseInfo(error.response.data.message);
       console.log(error);
     }
   }
@@ -43,6 +47,15 @@ class Store {
 
   setAuth(bool) {
     this.isAuth = bool;
+  }
+  setPaymentError(error) {
+    this.paymentError = error;
+  }
+  setUserPoints(points) {
+    this.userPoints = points;
+  }
+  setResponseInfo(info) {
+    this.responseInfo = info;
   }
   setUser(user) {
     this.user = user;
@@ -112,7 +125,7 @@ class Store {
 
   async getAllEvent() {
     try {
-      const response = await axios.get(`${API_URL}/events`);
+      const response = await $api.get(`${API_URL}/events`);
 
       if (response.data.length !== this.eventList.length) {
         this.eventList = [];
@@ -125,23 +138,21 @@ class Store {
             resource: { color: obj.resource.color, id: obj.id },
           });
         });
-
-        console.log("update");
       }
     } catch (e) {
       console.warn(e);
     }
   }
   async signUpEvent(eventId, userId) {
-    console.log(eventId, userId);
     try {
       const response = await $api.post(`${API_URL}/user/event/signup`, {
         user_id: userId,
         event_id: eventId,
       });
+      this.setResponseInfo(response.statusText);
+      console.log(response.statusText);
     } catch (error) {
-      this.setSignUpError(error.response.data.message);
-
+      this.setResponseInfo(error.response.data.message);
       console.log(error);
     }
   }
@@ -177,8 +188,10 @@ class Store {
         visited: condition,
       });
 
-      console.log(response);
+      this.setResponseInfo(response.statusText);
+      console.log(response.statusText);
     } catch (error) {
+      this.setResponseInfo(error.response.data.message);
       console.log(error);
     }
   }
@@ -219,8 +232,9 @@ class Store {
         user_id: userId,
         comment: comment,
       });
-      console.log(response);
+      this.setResponseInfo(response.statusText);
     } catch (error) {
+      this.setResponseInfo(error.response.data.message);
       console.log(error);
     }
   }
@@ -230,6 +244,55 @@ class Store {
       const response = await $api.get(`${API_URL}/events/comments/${eventId}`);
       console.log(response);
       return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async addSubj(itemName, cost) {
+    try {
+      const response = await $api.post(`${API_URL}/adm/product`, {
+        name: itemName,
+        price: cost,
+      });
+      this.setResponseInfo(response.statusText);
+    } catch (error) {
+      this.setResponseInfo(error.response.data.message);
+      console.log(error);
+    }
+  }
+  async getProducts() {
+    try {
+      const response = await $api.get(`${API_URL}/products`);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async buyProduct(productId, userId) {
+    try {
+      const response = await $api.post(`${API_URL}/product/buy`, {
+        product_id: productId,
+        user_id: userId,
+      });
+      this.setResponseInfo(response.statusText);
+      console.log(response.statusText);
+    } catch (error) {
+      this.setResponseInfo(error.response.data.message);
+      console.log(error);
+    }
+  }
+  async getLidderBoard() {
+    try {
+      const response = await $api.get(`${API_URL}/leaderboard`);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async getMyPoints(userId) {
+    try {
+      const response = await $api.get(`${API_URL}/user/${userId}`);
+      this.setUserPoints(response.data.points);
     } catch (error) {
       console.log(error);
     }

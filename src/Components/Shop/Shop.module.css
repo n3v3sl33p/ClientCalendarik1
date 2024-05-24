@@ -1,0 +1,51 @@
+.wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 14;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  background-color: #111f26;
+  border-radius: 6px;
+  padding: 50px;
+}
+.header {
+  color: #fff;
+}
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.list {
+  margin-top: 15px;
+  padding: 0px;
+}
+
+.eventName {
+  color: #fff;
+  margin-top: 5px;
+  list-style: none;
+}
+.button {
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #50b168;
+  color: #fff;
+}
+.errorMessage {
+  color: red;
+}
+.myPoints {
+  margin-bottom: 15px;
+  color: #fff;
+}

@@ -3,8 +3,9 @@ import styles from "./Style.module.css";
 import { Context } from "../../main";
 import { Button } from "../Button/Button";
 import { useClickOutside } from "../../Hooks/useClickOutside";
-
-export const MarkVisitedModal = ({ setIsMarkVisited, eventId }) => {
+import TimeModal from "../timeModal/TimeModal";
+import { observer } from "mobx-react-lite";
+export const MarkVisitedModal = observer(({ setIsMarkVisited, eventId }) => {
   const { store } = useContext(Context);
   const [userList, setUserList] = useState([]);
   const [userName, setUserName] = useState("");
@@ -21,7 +22,7 @@ export const MarkVisitedModal = ({ setIsMarkVisited, eventId }) => {
     };
     fetchData();
   }, []);
-
+  console.log(store.responseInfo);
   return (
     <div className={styles.modal}>
       <div className={styles.modalContent} ref={menuRef}>
@@ -34,6 +35,7 @@ export const MarkVisitedModal = ({ setIsMarkVisited, eventId }) => {
             setUserName(e.target.value);
           }}
         />
+
         {userList ? (
           <ul>
             {userList
@@ -66,6 +68,7 @@ export const MarkVisitedModal = ({ setIsMarkVisited, eventId }) => {
           <p>Никто не записался</p>
         )}
       </div>
+      {store.responseInfo && <TimeModal message={store.responseInfo} />}
     </div>
   );
-};
+});

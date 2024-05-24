@@ -31,7 +31,7 @@
   list-style: none;
   max-height: 400px;
   max-width: 700px;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 .comment {
   margin-top: 2px;

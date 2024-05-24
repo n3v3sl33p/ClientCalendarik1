@@ -1,0 +1,27 @@
+.header {
+  color: #000;
+}
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.list {
+  margin-top: 15px;
+  padding: 0px;
+  list-style: none;
+  overflow-y: scroll;
+  max-height: 650px;
+}
+
+.text {
+  color: #000;
+  margin-top: 5px;
+  list-style: none;
+}
+
+.wrapper {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 15px;
+}

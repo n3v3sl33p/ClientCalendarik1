@@ -17,6 +17,11 @@ import { MarkVisitedModal } from "./Components/MarkVisited/MarkVisitedModal";
 import { MyEvents } from "./Components/MyEvents/MyEvents";
 import { MyVisits } from "./Components/MyVisits/MyVisits";
 import { Comment } from "./Components/Comment/Comment";
+import { AddSubj } from "./Components/AddSubj/AddSubj";
+import { Shop } from "./Components/Shop/Shop";
+import { LeaderBoard } from "./Components/LeaderBoard/LeaderBoard";
+import TimeModal from "./Components/timeModal/TimeModal";
+
 registerLocale("ru", ru);
 
 export const App = observer(() => {
@@ -25,7 +30,6 @@ export const App = observer(() => {
   const [isModalEvent, setIsModalEvent] = useState(false);
   const { store } = useContext(Context);
   const [selectedEvent, setSelectedEvent] = useState({});
-  const [personeScore, setPersoneScore] = useState(null);
   const [isSideBar, setIsSideBar] = useState(false);
   const [isAddEvent, setIsAddEvent] = useState(false);
   const [isMyEvents, setIsMyEvents] = useState(false);
@@ -33,15 +37,15 @@ export const App = observer(() => {
   const [currentEvent, setCurrentEvent] = useState(false);
   const [isMyVisits, setIsMyVisits] = useState(false);
   const [isComment, setIsComment] = useState(false);
-  const [sample, setSample] = useState("");
+  const [isAddSubj, setIsAddSubj] = useState(false);
+  const [isShop, setIsShop] = useState(false);
   useEffect(() => {
     const fetchScore = async () => {
-      const score = await store.getPersoneScore(store.user.id);
-      setPersoneScore(score.points);
+      await store.getMyPoints(store.user.id);
     };
     if (localStorage.getItem("token")) {
       store.checkAuth();
-      fetchScore(store.user.id);
+      fetchScore();
     }
     if (store.user.id) {
       fetchScore();
@@ -59,6 +63,7 @@ export const App = observer(() => {
       {isMyEvents && <MyEvents setIsMyEvents={setIsMyEvents} />}
       {isLogin && <LogIn setIsLogin={setIsLogin} />}
       {isReg && <Registration setIsReg={setIsReg} />}
+      {/* {store.responseInfo && <TimeModal message={store.responseInfo} />} */}
       {isModalEvent && (
         <ModalEvent
           setIsModalEvent={setIsModalEvent}
@@ -73,6 +78,8 @@ export const App = observer(() => {
           setIsAddEvent={setIsAddEvent}
           setIsMyEvents={setIsMyEvents}
           setIsMyVisits={setIsMyVisits}
+          setIsAddSubj={setIsAddSubj}
+          setIsShop={setIsShop}
         />
       )}
       {isMarkVisited && (
@@ -88,6 +95,8 @@ export const App = observer(() => {
           setCurrentEvent={setCurrentEvent}
         />
       )}
+      {isAddSubj && <AddSubj setIsAddSubj={setIsAddSubj} />}
+      {isShop && <Shop setIsShop={setIsShop} />}
       {isComment && (
         <Comment setIsComment={setIsComment} eventId={currentEvent} />
       )}
@@ -115,7 +124,7 @@ export const App = observer(() => {
           <UserIcon />
         </div>
       )}
-      <p>{store.isAuth ? `${personeScore}` : null}</p>
+      <p className="nolik">0</p>
       <div className={styles.container}>
         {
           <MyCalendar
@@ -123,6 +132,7 @@ export const App = observer(() => {
             setSelectedEvent={setSelectedEvent}
           />
         }
+        <LeaderBoard />
       </div>
     </>
   );

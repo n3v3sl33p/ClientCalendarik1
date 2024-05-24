@@ -5,6 +5,7 @@ import { Context } from "../../main";
 
 import { Button } from "../Button/Button";
 import { useClickOutside } from "../../Hooks/useClickOutside";
+import TimeModal from "../timeModal/TimeModal";
 
 export const ModalEvent = observer(
   ({ event, setIsModalEvent, setIsMarkVisited, setCurrentEvent }) => {
@@ -82,6 +83,7 @@ export const ModalEvent = observer(
             )}
           </div>
         </div>
+        {store.responseInfo && <TimeModal message={store.responseInfo} />}
       </div>
     );
   }

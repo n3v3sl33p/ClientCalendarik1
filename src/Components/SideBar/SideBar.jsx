@@ -9,6 +9,8 @@ export const SideBar = ({
   setIsAddEvent,
   setIsMyEvents,
   setIsMyVisits,
+  setIsAddSubj,
+  setIsShop,
 }) => {
   const menuRef = useRef(null);
   const { store } = useContext(Context);
@@ -34,6 +36,7 @@ export const SideBar = ({
         >
           Мои посещения
         </Button>
+        <Button onClick={() => setIsShop((prev) => !prev)}>Магазин</Button>
         <Button
           onClick={() => {
             setIsAddEvent((prev) => !prev);
@@ -41,6 +44,14 @@ export const SideBar = ({
           }}
         >
           Новое мероприятие
+        </Button>
+        <Button
+          onClick={() => {
+            setIsAddSubj((prev) => !prev);
+            setIsSideBar((prev) => !prev);
+          }}
+        >
+          Добавить товар
         </Button>
       </div>
     </div>

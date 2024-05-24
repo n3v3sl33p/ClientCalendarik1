@@ -5,6 +5,7 @@ import { Button } from "../Button/Button";
 import { Context } from "../../main";
 import { observer } from "mobx-react-lite";
 import { useClickOutside } from "../../Hooks/useClickOutside";
+import TimeModal from "../timeModal/TimeModal";
 
 export const AddEvent = observer(({ setIsAddEvent }) => {
   const { store } = useContext(Context);
@@ -95,6 +96,7 @@ export const AddEvent = observer(({ setIsAddEvent }) => {
         >
           Создать
         </Button>
+        {store.responseInfo && <TimeModal message={store.responseInfo} />}
       </div>
     </div>
   );
